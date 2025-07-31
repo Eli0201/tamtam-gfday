@@ -65,7 +65,7 @@
     }
 
     .letter-content {
-      font-size: 18px;
+      font-size: clamp(16px, 4vw, 18px);
       color: #444;
       white-space: pre-wrap;
     }
@@ -115,6 +115,60 @@
       left: 0;
       pointer-events: none;
       z-index: 998;
+    }
+
+    /* Responsive for iPhone 13 and similar screens */
+    @media screen and (max-width: 420px) {
+      body {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 20px;
+        text-align: center;
+      }
+
+      .icon-btn img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .panel {
+        width: 90vw;
+        height: auto;
+        padding: 15px;
+      }
+
+      .letter-content {
+        font-size: 16px;
+      }
+
+      .voucher-images img {
+        width: 100%;
+        max-width: 220px;
+      }
+
+      .photo-gallery {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .photo-gallery img {
+        width: 90%;
+        height: auto;
+        max-width: 200px;
+      }
+
+      .photo-gallery img:nth-child(2) {
+        width: 95%;
+        height: auto;
+      }
+
+      .close-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -185,8 +239,8 @@
     }
 
     function launchConfetti() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = document.documentElement.clientWidth;
+      canvas.height = document.documentElement.clientHeight;
       let particles = [];
 
       for (let i = 0; i < 100; i++) {
