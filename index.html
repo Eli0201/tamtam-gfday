@@ -122,7 +122,6 @@
       z-index: 998;
     }
 
-    /* Responsive for iPhone 13 and similar screens */
     @media screen and (max-width: 420px) {
       body {
         padding: 20px;
@@ -204,7 +203,7 @@
       happiness, and my everything. I appreciate every little thing you’ve done for me. 
       You honestly make me feel like the luckiest guy in the world.
 
-      Happy Girlfriend’s Day I love you so much! 💖
+      Happy Girlfriend’s Day! I love you so much! 💖
 
       Always yours,
       Gaby
@@ -243,6 +242,9 @@
     const canvas = document.getElementById('confettiCanvas');
     const ctx = canvas.getContext('2d');
 
+    let confettiRunning = false;
+    let particles = [];
+
     function toggleLetter() {
       letterPanel.classList.toggle('active');
     }
@@ -254,50 +256,45 @@
       }
     }
 
-   function launchConfetti() {
-  canvas.width = document.documentElement.clientWidth;
-  canvas.height = document.documentElement.clientHeight;
-  let particles = [];
+    function launchConfetti() {
+      if (confettiRunning) return;
+      confettiRunning = true;
 
-  for (let i = 0; i < 100; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      r: Math.random() * 6 + 4,
-      d: Math.random() * 100,
-      color: `hsl(${Math.random() * 360}, 100%, 70%)`,
-      tilt: Math.floor(Math.random() * 10) - 5
-    });
-  }
+      canvas.width = document.documentElement.clientWidth;
+      canvas.height = document.documentElement.clientHeight;
 
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let p of particles) {
-      ctx.beginPath();
-      ctx.lineWidth = p.r / 2;
-      ctx.strokeStyle = p.color;
-      ctx.moveTo(p.x + p.tilt, p.y);
-      ctx.lineTo(p.x, p.y + p.tilt + p.r);
-      ctx.stroke();
-    }
-    update();
-  }
-
-  function update() {
-    for (let i = 0; i < particles.length; i++) {
-      let p = particles[i];
-      p.y += Math.cos(p.d) + 1 + p.r / 2;
-      p.x += Math.sin(p.d);
-      if (p.y > canvas.height) {
-        p.y = -10;
-        p.x = Math.random() * canvas.width;
+      for (let i = 0; i < 150; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 100,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+          tilt: Math.floor(Math.random() * 10) - 5
+        });
       }
-    }
-  }
 
-  // Just keep running draw every 30ms forever
-  setInterval(draw, 30);
-}
+      setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p of particles) {
+          ctx.beginPath();
+          ctx.lineWidth = p.r / 2;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt, p.y);
+          ctx.lineTo(p.x, p.y + p.tilt + p.r);
+          ctx.stroke();
+        }
+
+        for (let i = 0; i < particles.length; i++) {
+          let p = particles[i];
+          p.y += Math.cos(p.d) + 1 + p.r / 2;
+          p.x += Math.sin(p.d);
+          if (p.y > canvas.height) {
+            p.y = -10;
+            p.x = Math.random() * canvas.width;
+          }
+        }
+      }, 30);
     }
   </script>
 </body>
