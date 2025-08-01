@@ -254,49 +254,50 @@
       }
     }
 
-    function launchConfetti() {
-      canvas.width = document.documentElement.clientWidth;
-      canvas.height = document.documentElement.clientHeight;
-      let particles = [];
+   function launchConfetti() {
+  canvas.width = document.documentElement.clientWidth;
+  canvas.height = document.documentElement.clientHeight;
+  let particles = [];
 
-      for (let i = 0; i < 100; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height - canvas.height,
-          r: Math.random() * 6 + 4,
-          d: Math.random() * 100,
-          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
-          tilt: Math.floor(Math.random() * 10) - 5
-        });
+  for (let i = 0; i < 100; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 100,
+      color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+      tilt: Math.floor(Math.random() * 10) - 5
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p of particles) {
+      ctx.beginPath();
+      ctx.lineWidth = p.r / 2;
+      ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt, p.y);
+      ctx.lineTo(p.x, p.y + p.tilt + p.r);
+      ctx.stroke();
+    }
+    update();
+  }
+
+  function update() {
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+      p.y += Math.cos(p.d) + 1 + p.r / 2;
+      p.x += Math.sin(p.d);
+      if (p.y > canvas.height) {
+        p.y = -10;
+        p.x = Math.random() * canvas.width;
       }
+    }
+  }
 
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let p of particles) {
-          ctx.beginPath();
-          ctx.lineWidth = p.r / 2;
-          ctx.strokeStyle = p.color;
-          ctx.moveTo(p.x + p.tilt, p.y);
-          ctx.lineTo(p.x, p.y + p.tilt + p.r);
-          ctx.stroke();
-        }
-        update();
-      }
-
-      function update() {
-        for (let i = 0; i < particles.length; i++) {
-          let p = particles[i];
-          p.y += Math.cos(p.d) + 1 + p.r / 2;
-          p.x += Math.sin(p.d);
-          if (p.y > canvas.height) {
-            p.y = -10;
-            p.x = Math.random() * canvas.width;
-          }
-        }
-      }
-
-      let interval = setInterval(draw, 30);
-      setTimeout(() => clearInterval(interval), 3000);
+  // Just keep running draw every 30ms forever
+  setInterval(draw, 30);
+}
     }
   </script>
 </body>
